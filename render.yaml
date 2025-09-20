@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: sweet-shop-backend
+    env: node
+    plan: free
+    buildCommand: npm ci && npx prisma generate && npm run build
+    startCommand: node dist/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+
+
+

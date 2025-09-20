@@ -1,0 +1,19 @@
+# Node
+node_modules/
+
+# Build outputs
+/dist/
+frontend/dist/
+
+# Env and DB
+.env
+*.env
+/dev.db
+/prisma/dev.db
+
+# OS/Editor
+.DS_Store
+*.log
+.idea/
+.vscode/
+

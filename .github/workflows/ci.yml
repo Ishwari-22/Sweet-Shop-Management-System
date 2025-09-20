@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install root deps
+        run: npm ci
+      - name: Generate Prisma client
+        run: npx prisma generate
+      - name: Migrate SQLite
+        run: npx prisma migrate dev --name init --skip-seed
+        env:
+          DATABASE_URL: file:./dev.db
+      - name: Run tests
+        run: npx jest --runInBand --verbose
+        env:
+          JWT_SECRET: test_secret
+          DATABASE_URL: file:./dev.db
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+
+
